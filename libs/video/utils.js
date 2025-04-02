@@ -665,16 +665,16 @@ module.exports = (s,config,lang) => {
         try {
             await fsP.writeFile(tempFileListPath, fileList);
             let ffmpegArgs;
-            // if (allSameExtension) {
-            //     ffmpegArgs = [
-            //         '-f', 'concat',
-            //         '-safe', '0',
-            //         '-i', tempFileListPath,
-            //         '-c', 'copy',
-            //         '-y',
-            //         outputFilePath
-            //     ];
-            // } else {
+            if (allSameExtension) {
+                ffmpegArgs = [
+                    '-f', 'concat',
+                    '-safe', '0',
+                    '-i', tempFileListPath,
+                    '-c', 'copy',
+                    '-y',
+                    outputFilePath
+                ];
+            } else {
                 ffmpegArgs = [
                     '-loglevel', 'warning',
                     '-f', 'concat',
@@ -683,11 +683,12 @@ module.exports = (s,config,lang) => {
                     '-c:v', videoCodec,
                     '-c:a', audioCodec,
                     '-strict', '-2',
-                    '-crf', '1',
+                    '-crf', '23',
+                    '-preset', 'fast',
                     '-y',
                     outputFilePath
                 ];
-            // }
+            }
             s.debugLog(fileList)
             s.debugLog(ffmpegArgs)
 
